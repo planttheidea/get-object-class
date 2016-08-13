@@ -14,6 +14,7 @@ const CLASS_NAMES = [
   'Int8Array',
   'Int16Array',
   'Int32Array',
+  'JSON',
   'Map',
   'Math',
   'Null',
