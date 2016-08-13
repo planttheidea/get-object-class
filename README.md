@@ -67,6 +67,7 @@ This library rectifies that by giving you the specific object class for any obje
 * Int8Array => `int8array`
 * Int16Array => `int16array`
 * Int32Array => `int32array`
+* JSON => `json` (tests the JSON object itself, not if the value is a valid JSON string)
 * Map => `map`
 * Math => `math`
 * Null => `null`
@@ -104,6 +105,7 @@ const regexp = /foo/;
 
 console.log(goc.isRegExp(regexp)); // true
 console.log(goc.isFloat32Array(regexp)); // false
+console.log(goc.isJSON(regexp)); // false
 ```
 
 ### Development
