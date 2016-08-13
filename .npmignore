@@ -7,7 +7,6 @@ test/
 .eslintrc
 .gitignore
 .npmignore
-server.js
 webpack.config.js
 webpack.config.minified.js
 webpack.config.dev.js
