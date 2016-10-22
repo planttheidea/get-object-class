@@ -1,21 +1,19 @@
 // constants
 import {
   CLASS_NAMES
-} from './constants/classNames';
-import {
-  HTML_ELEMENT_REGEXP
-} from './constants/regexp';
+} from './utils/constants';
 
 // utils
 import {
-  getObjectClass as getClassName
-} from './utils/getObjectClass';
+  getClassName,
+  getIsElement
+} from './utils/getClassName';
 
 /**
  * return the lowercase object class name for the
  * object provided
  *
- * @param {any} object
+ * @param {*} object
  * @returns {string}
  */
 const getObjectClass = (object) => {
@@ -23,11 +21,7 @@ const getObjectClass = (object) => {
     return 'null';
   }
 
-  if (object === void 0) {
-    return 'undefined';
-  }
-
-  if (object && object.nodeType === 1) {
+  if (getIsElement(object)) {
     return 'element';
   }
 
@@ -40,8 +34,10 @@ const getObjectClass = (object) => {
  * which all accept {any} object and return {string}
  */
 CLASS_NAMES.forEach((className) => {
+  const lowerCaseClassName = className.toLowerCase();
+
   getObjectClass[`is${className}`] = (object) => {
-    return getClassName(object) === className;
+    return getObjectClass(object) === lowerCaseClassName;
   };
 });
 
@@ -49,13 +45,9 @@ CLASS_NAMES.forEach((className) => {
  * isElement is unique because there can be a wealth of object class
  * names associated with it, so it gets created separately
  *
- * @param {any} object
+ * @param {*} object
  * @returns {boolean}
  */
-getObjectClass.isElement = (object) => {
-  const className = getClassName(object);
-
-  return HTML_ELEMENT_REGEXP.test(className) || !!(object && object.nodeType === 1);
-};
+getObjectClass.isElement = getIsElement;
 
 export default getObjectClass;

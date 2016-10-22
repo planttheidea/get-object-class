@@ -54,35 +54,32 @@ var getObjectClass =
 
 	'use strict';
 	
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
-	var _classNames = __webpack_require__(2);
+	var _constants = __webpack_require__(2);
 	
-	var _regexp = __webpack_require__(3);
-	
-	var _getObjectClass = __webpack_require__(4);
+	var _getClassName = __webpack_require__(3);
 	
 	/**
 	 * return the lowercase object class name for the
 	 * object provided
 	 *
-	 * @param {any} object
+	 * @param {*} object
 	 * @returns {string}
 	 */
+	// constants
 	var getObjectClass = function getObjectClass(object) {
 	  if (object === null) {
 	    return 'null';
 	  }
 	
-	  if (object === void 0) {
-	    return 'undefined';
-	  }
-	
-	  if (object && object.nodeType === 1) {
+	  if ((0, _getClassName.getIsElement)(object)) {
 	    return 'element';
 	  }
 	
-	  return (0, _getObjectClass.getObjectClass)(object).toLowerCase();
+	  return (0, _getClassName.getClassName)(object).toLowerCase();
 	};
 	
 	/**
@@ -92,10 +89,11 @@ var getObjectClass =
 	
 	
 	// utils
-	// constants
-	_classNames.CLASS_NAMES.forEach(function (className) {
+	_constants.CLASS_NAMES.forEach(function (className) {
+	  var lowerCaseClassName = className.toLowerCase();
+	
 	  getObjectClass['is' + className] = function (object) {
-	    return (0, _getObjectClass.getObjectClass)(object) === className;
+	    return getObjectClass(object) === lowerCaseClassName;
 	  };
 	});
 	
@@ -103,14 +101,10 @@ var getObjectClass =
 	 * isElement is unique because there can be a wealth of object class
 	 * names associated with it, so it gets created separately
 	 *
-	 * @param {any} object
+	 * @param {*} object
 	 * @returns {boolean}
 	 */
-	getObjectClass.isElement = function (object) {
-	  var className = (0, _getObjectClass.getObjectClass)(object);
-	
-	  return _regexp.HTML_ELEMENT_REGEXP.test(className) || !!(object && object.nodeType === 1);
-	};
+	getObjectClass.isElement = _getClassName.getIsElement;
 	
 	exports.default = getObjectClass;
 	module.exports = exports['default'];
@@ -121,39 +115,36 @@ var getObjectClass =
 
 	'use strict';
 	
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	var CLASS_NAMES = ['Arguments', 'Array', 'ArrayBuffer', 'Boolean', 'DataView', 'Date', 'Error', 'Float32Array', 'Float64Array', 'Function', 'GeneratorFunction', 'global', 'Int8Array', 'Int16Array', 'Int32Array', 'JSON', 'Map', 'Math', 'Null', 'Number', 'Object', 'Promise', 'RegExp', 'Set', 'String', 'Symbol', 'Uint8Array', 'Uint8ClampedArray', 'Uint16Array', 'Uint32Array', 'Undefined', 'WeakMap', 'WeakSet', 'Window'];
 	
+	var HTML_ELEMENT_REGEXP = /HTML(.*)Element/;
+	
 	exports.CLASS_NAMES = CLASS_NAMES;
+	exports.HTML_ELEMENT_REGEXP = HTML_ELEMENT_REGEXP;
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	exports.__esModule = true;
-	var HTML_ELEMENT_REGEXP = /HTML(.*)Element/;
-	var OBJECT_CLASS_REGEXP = /\[object (\w+)\]/;
-	
-	exports.HTML_ELEMENT_REGEXP = HTML_ELEMENT_REGEXP;
-	exports.OBJECT_CLASS_REGEXP = OBJECT_CLASS_REGEXP;
-
-/***/ },
-/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.__esModule = true;
-	exports.toString = exports.getObjectClass = undefined;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.toString = exports.getStartcaseString = exports.getClassNameFromToString = exports.getClassName = exports.getIsElement = undefined;
 	
-	var _regexp = __webpack_require__(3);
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; // constants
+	
+	
+	var _constants = __webpack_require__(2);
 	
 	/**
 	 * convert any object
 	 *
-	 * @param {any} object
+	 * @param {*} object
 	 * @returns {string}
 	 */
 	var toString = function toString(object) {
@@ -161,21 +152,65 @@ var getObjectClass =
 	};
 	
 	/**
-	 * get the object class name for the provided object
-	 *
-	 * @param {any} object
-	 * @returns {string}
+	 * determine if the object passed is an element based on its object class
+	 * 
+	 * @param {*} object
+	 * @returns {boolean}
 	 */
-	var getObjectClass = function getObjectClass(object) {
-	  var objectToString = toString(object);
-	  var objectClass = objectToString.replace(_regexp.OBJECT_CLASS_REGEXP, function (match, value) {
-	    return value;
-	  });
+	var getIsElement = function getIsElement(object) {
+	  var className = getClassName(object);
 	
-	  return objectClass;
+	  return _constants.HTML_ELEMENT_REGEXP.test(className) || !!(object && object.nodeType === 1);
 	};
 	
-	exports.getObjectClass = getObjectClass;
+	/**
+	 * get the object prototype toString of the object passed, and return
+	 * the classname from that string
+	 *
+	 * @param {*} object
+	 * @returns {string}
+	 */
+	var getClassNameFromToString = function getClassNameFromToString(object) {
+	  var objectToString = toString(object);
+	
+	  return objectToString.substring(8, objectToString.length - 1);
+	};
+	
+	/**
+	 * convert the Startcase version of the string passed
+	 * 
+	 * @param {string} string
+	 * @returns {string}
+	 */
+	var getStartcaseString = function getStartcaseString(string) {
+	  var lowercaseString = string.toLowerCase();
+	
+	  return '' + lowercaseString.charAt(0).toUpperCase() + lowercaseString.substring(1);
+	};
+	
+	/**
+	 * get the object class name for the provided object
+	 *
+	 * @param {*} object
+	 * @returns {string}
+	 */
+	var getClassName = function getClassName(object) {
+	  var typeofObject = typeof object === 'undefined' ? 'undefined' : _typeof(object);
+	
+	  switch (typeofObject) {
+	    case 'object':
+	    case 'function':
+	      return getClassNameFromToString(object);
+	
+	    default:
+	      return getStartcaseString(typeofObject);
+	  }
+	};
+	
+	exports.getIsElement = getIsElement;
+	exports.getClassName = getClassName;
+	exports.getClassNameFromToString = getClassNameFromToString;
+	exports.getStartcaseString = getStartcaseString;
 	exports.toString = toString;
 
 /***/ }
