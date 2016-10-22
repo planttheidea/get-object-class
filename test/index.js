@@ -5,7 +5,7 @@ import goc from '../src/index';
 
 import {
   CLASS_NAMES
-} from '../src/constants/classNames';
+} from '../src/utils/constants';
 
 import * as data from './helpers/fakeData';
 
@@ -29,9 +29,11 @@ test('if main function returns the correct value', (t) => {
 
 test('if each checker function returns the correct boolean value for the object type', (t) => {
   classNamesWithoutWindow.forEach((className) => {
+    const lowerCaseClassName = className.toLowerCase();
+
     dataKeys.forEach((dataKey) => {
       const dataClassName = camelCase(dataKey).toLowerCase();
-      const expectedResult = dataClassName === className.toLowerCase();
+      const expectedResult = dataClassName === lowerCaseClassName;
 
       t[expectedResult](goc[`is${className}`](data[dataKey]));
     });
