@@ -6,7 +6,7 @@ const argumentsFunc = function() {
 
 argumentsFunc();
 
-export {ARGUMENTS};
+export { ARGUMENTS };
 
 export const ARRAY = [];
 export const ARRAY_BUFFER = new ArrayBuffer(8);
@@ -17,7 +17,7 @@ export const ERROR = new Error('foo');
 export const FLOAT_32_ARRAY = new Float32Array(8);
 export const FLOAT_64_ARRAY = new Float64Array(8);
 export const FUNCTION = function() {};
-export const GENERATOR_FUNCTION = function* () {};
+export const GENERATOR_FUNCTION = function*() {};
 export const GLOBAL = global;
 export const INT_8_ARRAY = new Int8Array(8);
 export const INT_16_ARRAY = new Int16Array(8);

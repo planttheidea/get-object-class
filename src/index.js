@@ -1,13 +1,8 @@
 // constants
-import {
-  CLASS_NAMES
-} from './utils/constants';
+import { CLASS_NAMES } from './constants';
 
 // utils
-import {
-  getClassName,
-  getIsElement
-} from './utils/getClassName';
+import { getClassName, getIsElement } from './getClassName';
 
 /**
  * return the lowercase object class name for the
@@ -25,8 +20,11 @@ const getObjectClass = (object) => {
     return 'element';
   }
 
-  return getClassName(object).toLowerCase();
+  const type = typeof object;
 
+  return type === 'object' || type === 'function'
+    ? getClassName(object).toLowerCase()
+    : type;
 };
 
 /**
@@ -36,9 +34,8 @@ const getObjectClass = (object) => {
 CLASS_NAMES.forEach((className) => {
   const lowerCaseClassName = className.toLowerCase();
 
-  getObjectClass[`is${className}`] = (object) => {
-    return getObjectClass(object) === lowerCaseClassName;
-  };
+  getObjectClass[`is${className}`] = (object) =>
+    getObjectClass(object) === lowerCaseClassName;
 });
 
 /**

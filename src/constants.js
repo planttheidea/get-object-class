@@ -1,4 +1,4 @@
-const CLASS_NAMES = [
+export const CLASS_NAMES = [
   'Arguments',
   'Array',
   'ArrayBuffer',
@@ -35,7 +35,4 @@ const CLASS_NAMES = [
   'Window'
 ];
 
-const HTML_ELEMENT_REGEXP = /HTML(.*)Element/;
-
-export {CLASS_NAMES};
-export {HTML_ELEMENT_REGEXP};
+export const HTML_ELEMENT_REGEXP = /HTML(.*)Element/;
