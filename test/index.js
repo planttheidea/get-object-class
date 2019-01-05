@@ -3,9 +3,7 @@ import test from 'ava';
 
 import goc from '../src/index';
 
-import {
-  CLASS_NAMES
-} from '../src/utils/constants';
+import { CLASS_NAMES } from '../src/constants';
 
 import * as data from './helpers/fakeData';
 
@@ -23,7 +21,7 @@ test('if main function returns the correct value', (t) => {
   dataKeys.forEach((dataKey) => {
     const className = camelCase(dataKey).toLowerCase();
 
-    t.is(goc(data[dataKey]), className);
+    t.is(goc(data[dataKey]), className, className);
   });
 });
 
@@ -35,7 +33,7 @@ test('if each checker function returns the correct boolean value for the object 
       const dataClassName = camelCase(dataKey).toLowerCase();
       const expectedResult = dataClassName === lowerCaseClassName;
 
-      t[expectedResult](goc[`is${className}`](data[dataKey]));
+      t[expectedResult](goc[`is${className}`](data[dataKey]), dataKey);
     });
   });
 });
