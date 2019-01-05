@@ -44,7 +44,7 @@
     "test:watch": "NODE_ENV=test ava --no-cache --watch",
     "transpile": "babel src --out-dir lib"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "devDependencies": {
     "ava": "^0.25.0",
     "babel-cli": "^6.26.0",
